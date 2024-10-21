@@ -1,0 +1,67 @@
+#!/bin/sh
+
+# Install Apache & Amazon EC2 utils
+apt update -y
+apt install apache2 -y
+apt install amazon-ec2-utils -y
+
+# Start the Apache service
+systemctl start apache2
+
+# Enable Apache to start on every system boot up
+systemctl enable apache2
+
+# Get the current instance's Information
+AZ=`ec2-metadata -z | cut -d':' -f2`
+
+# Create the HTML content
+cat <<EOF > /var/www/html/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC2 Instance Information</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 class="header">EC2 Instance Information</h1>
+    <p>Name: Chong Chen</p>
+    <p>The current region and AZ: $AZ</p>
+</body>
+</html>
+EOF
+
+# Create a basic CSS file
+cat <<EOF > /var/www/html/styles.css
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #f6d365, #fda085);
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+.header {
+    color: #2c3e50;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    border-bottom: 3px solid #2c3e50;
+    padding-bottom: 10px;
+    transition: color 0.3s ease;
+}
+
+.header:hover {
+    color: #e74c3c;
+}
+
+p {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+EOF
+
+# Set appropriate permissions
+chown -R www-data:www-data /var/www/html
+chmod -R 755 /var/www/html

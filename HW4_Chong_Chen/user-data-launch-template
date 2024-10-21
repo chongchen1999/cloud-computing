@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Get the current instance's Information
+AZ=`ec2-metadata -z | cut -d':' -f2`
+
+# Rewrite the HTML file
+cat <<EOF > /var/www/html/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC2 Instance Information</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 class="header">EC2 Instance Information</h1>
+    <p>Name: Chong Chen</p>
+    <p>The current region and AZ: $AZ</p>
+</body>
+</html>
+EOF
+
+# Restart Apache2
+systemctl restart apache2*v 
