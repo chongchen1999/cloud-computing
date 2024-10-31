@@ -3,6 +3,7 @@ from diagrams.aws.network import VPC, InternetGateway, ALB, Route53, VPCRouter
 from diagrams.aws.compute import EC2, AutoScaling
 from diagrams.aws.database import RDS
 from diagrams.aws.management import Cloudwatch
+from diagrams.aws.storage import S3  # Importing S3 icon
 from diagrams.onprem.client import Users
 from diagrams.aws.security import ACM
 from diagrams.onprem.container import Docker  # Importing Docker icon
@@ -78,3 +79,8 @@ with Diagram("AWS Cloud Architecture", show=False, graph_attr=graph_attrs):
 
     # Connect ACM to ALB for SSL/TLS security
     acm >> Edge() >> alb
+
+    # Amazon S3 bucket for data storage, linked to RDS
+    s3 = S3("Amazon S3")
+    rds_1 >> Edge(label="Backup/Storage") >> s3
+    rds_2 >> Edge(label="Backup/Storage") >> s3
