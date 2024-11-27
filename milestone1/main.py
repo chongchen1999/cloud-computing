@@ -10,7 +10,7 @@ from diagrams.onprem.container import Docker  # Importing Docker icon
 
 # Define the cloud architecture diagram with specified size (width * height)
 graph_attrs = {
-    "size": "50,30"  # Width=11 inches, Height=8.5 inches (adjust as needed)
+    "size": "85,30"  # Width=11 inches, Height=8.5 inches (adjust as needed)
 }
 
 with Diagram("AWS Cloud Architecture", show=False, graph_attr=graph_attrs):
